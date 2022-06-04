@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -12,6 +12,8 @@ import { Card } from "./src/components/Card";
 export default function App() {
   const [newSkill, setNewSkill] = useState("");
   const [mySkills, setMySkills] = useState([]);
+  const [countSkills, setCountSkills] = useState(0);
+  const [greeting, setGreeting] = useState("");
   function handleAddSkills() {
     mySkills.includes(newSkill)
       ? alert("Skill already exists")
@@ -20,9 +22,21 @@ export default function App() {
   function handleClearSkills() {
     setMySkills([]);
   }
+  useEffect(() => {
+    setCountSkills(mySkills.length);
+  }, [mySkills]);
+  useEffect(() => {
+    const current = new Date().getHours();
+    if (current < 12) {
+      setGreeting("Good Morning");
+    } else if (current >= 12 && current < 18) {
+      setGreeting("Good Afternoon");
+    } else setGreeting("Good  night");
+  }, []);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome Binary Leo</Text>
+      <Text style={styles.greeting}>{greeting}</Text>
       <TextInput
         placeholder="New Skill"
         style={styles.input}
@@ -34,7 +48,9 @@ export default function App() {
         <RemoveBtn onRemove={handleClearSkills} />
       </View>
 
-      <Text style={[styles.title, { marginTop: 20 }]}>My Skills</Text>
+      <Text style={[styles.title, { marginTop: 20 }]}>
+        My Skills <Text>{countSkills}</Text>
+      </Text>
       <FlatList
         data={mySkills}
         keyExtractor={(item) => item}
@@ -65,4 +81,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: Platform.OS === "ios" ? 15 : 10,
   },
+  greeting:{
+    color: "#fff",
+    marginTop:5
+  }
 });
