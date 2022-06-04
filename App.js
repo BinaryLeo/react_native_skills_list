@@ -5,8 +5,10 @@ import {
   StyleSheet,
   TextInput,
   Platform,
-  TouchableOpacity,
+  FlatList,
 } from "react-native";
+import { AddButton, RemoveBtn } from "./src/components/Button";
+import { Card } from "./src/components/Card";
 export default function App() {
   const [newSkill, setNewSkill] = useState("");
   const [mySkills, setMySkills] = useState([]);
@@ -26,32 +28,16 @@ export default function App() {
         onChangeText={setNewSkill}
       />
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <TouchableOpacity
-          style={[styles.button, { flex: 1, marginRight: 15 }]}
-          activeOpacity={0.7}
-          onPress={handleAddSkills}
-        >
-          <Text style={styles.buttonText}>Add</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.button, { flex: 1 }]}
-          activeOpacity={0.7}
-          onPress={handleClearSkills}
-        >
-          <Text style={styles.buttonText}>Clear List</Text>
-        </TouchableOpacity>
+        <AddButton onPress={handleAddSkills} />
+        <RemoveBtn onRemove={handleClearSkills} />
       </View>
 
-      <Text style={[styles.title, { marginTop: 20 }]}>My Skills 
-      </Text>
-      {mySkills.map((skill, index) => (
-        <>
-        <Text key={index} style={styles.skills}>
-        {skill}
-        
-        </Text>
-        </>
-      ))}
+      <Text style={[styles.title, { marginTop: 20 }]}>My Skills</Text>
+      <FlatList
+        data={mySkills}
+        keyExtractor={(item) => item}
+        renderItem={({ item }) => <Card skill={item} />}
+      />
     </View>
   );
 }
@@ -77,26 +63,4 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: Platform.OS === "ios" ? 15 : 10,
   },
-  button: {
-    backgroundColor: "#A370F7",
-    padding: 15,
-    borderRadius: 7,
-    alignItems: "center",
-    marginTop: 20,
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  skills: {
-    backgroundColor: "#1F1e25",
-    color: "#fff",
-    justifyContent: "center",
-    marginTop: 15,
-    padding: 20,
-    fontSize: 20,
-    borderLeftColor: "#A370F7",
-    borderLeftWidth: 10,
-  }
 });
