@@ -13,7 +13,9 @@ export default function App() {
   const [newSkill, setNewSkill] = useState("");
   const [mySkills, setMySkills] = useState([]);
   function handleAddSkills() {
-    setMySkills((oldState) => [...oldState, newSkill]);
+    mySkills.includes(newSkill)
+      ? alert("Skill already exists")
+      : setMySkills((oldState) => [...oldState, newSkill]);
   }
   function handleClearSkills() {
     setMySkills([]);
