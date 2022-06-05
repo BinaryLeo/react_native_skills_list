@@ -1,9 +1,11 @@
 import React from 'react';
 import {Text, StyleSheet} from 'react-native';
 
+interface SkillCardProps {
+  skill: string;
+}
 
-
-export function Card({skill}) {
+export function Card({skill}:SkillCardProps) {
   return (
     <Text style={styles.skills}>
     {skill}
