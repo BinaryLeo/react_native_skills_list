@@ -1,6 +1,8 @@
 import React from 'react';
 import {Text, StyleSheet} from 'react-native';
 
+
+
 export function Card({skill}) {
   return (
     <Text style={styles.skills}>

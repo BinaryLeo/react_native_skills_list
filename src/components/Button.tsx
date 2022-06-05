@@ -6,29 +6,32 @@ import {
   StyleSheet,
 } from "react-native";
 
-type ButtonProps = TouchableOpacityProps;
+interface ButtonProps extends TouchableOpacityProps {
+  title: string;
+}
 interface RemoveBtn {
   OnRemove: () => void;
+  title: string;
 }
-export function AddButton({ onPress }: ButtonProps) {
+export function AddButton({ title, ...rest }: ButtonProps) {
   return (
     <TouchableOpacity
       style={[styles.button, { flex: 1, marginRight: 15 }]}
       activeOpacity={0.7}
-      onPress={onPress}
+      {...rest}
     >
-      <Text style={styles.buttonText}>Add</Text>
+      <Text style={styles.buttonText}>{title}</Text>
     </TouchableOpacity>
   );
 }
-export function Remove({ OnRemove }: RemoveBtn) {
+export function Remove({ title, OnRemove }: RemoveBtn) {
   return (
     <TouchableOpacity
       style={[styles.button, { flex: 1 }]}
       activeOpacity={0.7}
       onPress={OnRemove}
     >
-      <Text style={styles.buttonText}>Clear List</Text>
+      <Text style={styles.buttonText}>{title}</Text>
     </TouchableOpacity>
   );
 }

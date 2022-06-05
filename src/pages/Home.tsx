@@ -28,6 +28,9 @@ export  function Home() {
     }
     if(mySkills.find(skill => skill.name === newSkill)){
     Alert.alert("Skill already exists")}
+    else if(newSkill === ""){
+      Alert.alert("Please enter a skill")
+    }
     else{
     setMySkills((oldState) => [...oldState, data])}
   }
@@ -58,8 +61,12 @@ export  function Home() {
         onChangeText={setNewSkill}
       />
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <AddButton onPress={handleAddSkills} />
-        <Remove OnRemove={handleClearSkills} />
+        <AddButton onPress={handleAddSkills}
+         title="Add" />
+        
+        <Remove OnRemove={handleClearSkills}
+         title="Clear" />
+        
       </View>
 
       <Text style={[styles.title, { marginTop: 20 }]}>
