@@ -8,35 +8,37 @@ import {
   FlatList,
   Alert,
 } from "react-native";
-import { AddButton, Remove } from "../components/Button"
+import { AddButton, Remove } from "../components/Button";
 import { Card } from "../components/Card";
 
-interface  SkillData {
+interface SkillData {
   id: string;
   name: string;
 }
 
-export  function Home() {
+export function Home() {
   const [newSkill, setNewSkill] = useState("");
   const [mySkills, setMySkills] = useState<SkillData[]>([]);
   const [countSkills, setCountSkills] = useState(0);
   const [greeting, setGreeting] = useState("");
   function handleAddSkills() {
-    const data ={
+    const data = {
       id: String(new Date().getTime()),
-      name: newSkill
+      name: newSkill,
+    };
+    if (mySkills.find((skill) => skill.name === newSkill)) {
+      Alert.alert("Skill already exists");
+    } else if (newSkill === "") {
+      Alert.alert("Please enter a skill");
+    } else {
+      setMySkills((oldState) => [...oldState, data]);
     }
-    if(mySkills.find(skill => skill.name === newSkill)){
-    Alert.alert("Skill already exists")}
-    else if(newSkill === ""){
-      Alert.alert("Please enter a skill")
-    }
-    else{
-    setMySkills((oldState) => [...oldState, data])}
   }
   function handleClearSkills() {
     setMySkills([]);
-
+  }
+  function handleRemoveSkill(id: string) {
+    setMySkills((oldState) => oldState.filter((skill) => skill.id !== id));
   }
   useEffect(() => {
     setCountSkills(mySkills.length);
@@ -50,7 +52,6 @@ export  function Home() {
     } else setGreeting("Good  night");
   }, []);
   return (
-
     <View style={styles.container}>
       <Text style={styles.title}>Welcome Binary Leo</Text>
       <Text style={styles.greeting}>{greeting}</Text>
@@ -61,12 +62,9 @@ export  function Home() {
         onChangeText={setNewSkill}
       />
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <AddButton onPress={handleAddSkills}
-         title="Add" />
-        
-        <Remove OnRemove={handleClearSkills}
-         title="Clear" />
-        
+        <AddButton onPress={handleAddSkills} title="Add" />
+
+        <Remove OnRemove={handleClearSkills} title="Clear" />
       </View>
 
       <Text style={[styles.title, { marginTop: 20 }]}>
@@ -75,7 +73,9 @@ export  function Home() {
       <FlatList
         data={mySkills}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <Card skill={item.name} />}
+        renderItem={({ item }) => (
+          <Card skill={item.name} onPress={() => handleRemoveSkill(item.id)} />
+        )}
       />
     </View>
   );
@@ -102,8 +102,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: Platform.OS === "ios" ? 15 : 10,
   },
-  greeting:{
+  greeting: {
     color: "#fff",
-    marginTop:5
-  }
+    marginTop: 5,
+  },
 });
