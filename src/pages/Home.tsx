@@ -8,7 +8,7 @@ import {
   FlatList,
   Alert,
 } from "react-native";
-import { AddButton, RemoveBtn } from "../components/Button"
+import { AddButton, Remove } from "../components/Button"
 import { Card } from "../components/Card";
 
 interface  SkillData {
@@ -33,7 +33,7 @@ export  function Home() {
   }
   function handleClearSkills() {
     setMySkills([]);
-    
+
   }
   useEffect(() => {
     setCountSkills(mySkills.length);
@@ -59,7 +59,7 @@ export  function Home() {
       />
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <AddButton onPress={handleAddSkills} />
-        <RemoveBtn onRemove={handleClearSkills} />
+        <Remove OnRemove={handleClearSkills} />
       </View>
 
       <Text style={[styles.title, { marginTop: 20 }]}>
