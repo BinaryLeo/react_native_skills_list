@@ -6,21 +6,34 @@ import {
   TextInput,
   Platform,
   FlatList,
+  Alert,
 } from "react-native";
 import { AddButton, RemoveBtn } from "../components/Button"
 import { Card } from "../components/Card";
+
+interface  SkillData {
+  id: string;
+  name: string;
+}
+
 export  function Home() {
   const [newSkill, setNewSkill] = useState("");
-  const [mySkills, setMySkills] = useState([]);
+  const [mySkills, setMySkills] = useState<SkillData[]>([]);
   const [countSkills, setCountSkills] = useState(0);
   const [greeting, setGreeting] = useState("");
   function handleAddSkills() {
-    mySkills.includes(newSkill)
-      ? alert("Skill already exists")
-      : setMySkills((oldState) => [...oldState, newSkill]);
+    const data ={
+      id: String(new Date().getTime()),
+      name: newSkill
+    }
+    if(mySkills.find(skill => skill.name === newSkill)){
+    Alert.alert("Skill already exists")}
+    else{
+    setMySkills((oldState) => [...oldState, data])}
   }
   function handleClearSkills() {
     setMySkills([]);
+    
   }
   useEffect(() => {
     setCountSkills(mySkills.length);
@@ -54,8 +67,8 @@ export  function Home() {
       </Text>
       <FlatList
         data={mySkills}
-        keyExtractor={(item) => item}
-        renderItem={({ item }) => <Card skill={item} />}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => <Card skill={item.name} />}
       />
     </View>
   );
